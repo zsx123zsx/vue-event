@@ -3,8 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import '@/assets/global.less'
-
-Vue.config.productionTip = false
+import '@/elementUI/index.js'
 
 new Vue({
   store,
