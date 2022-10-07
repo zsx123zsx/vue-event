@@ -1,18 +1,16 @@
 <template>
-  <div>
-    <el-row>
-      <el-button>默认按钮</el-button>
-      <el-button type="primary" disabled>主要按钮</el-button>
-      <el-button type="success" disabled>成功按钮</el-button>
-      <el-button type="info" disabled>信息按钮</el-button>
-      <el-button type="warning" disabled>警告按钮</el-button>
-      <el-button type="danger" disabled>危险按钮</el-button>
-    </el-row>
-  </div>
+  <!-- 一级路由挂载  -->
+  <router-view></router-view>
 </template>
 
 <script>
-export default {}
+// import { registerAPI } from '@/api'
+export default {
+  async created() {
+    // const res = await registerAPI()
+    // console.log(res)
+  },
+}
 </script>
 
 <style></style>
