@@ -36,7 +36,49 @@
     </el-header>
     <el-container>
       <!-- 侧边栏区域 -->
-      <el-aside width="200px">Aside</el-aside>
+      <!-- 左侧边栏的用户信息 -->
+      <el-aside width="200px">
+        <div class="user-box">
+          <img :src="user_pic" alt="" v-if="user_pic" />
+          <img src="../../assets/images/logo.png" alt="" v-else />
+          <span>欢迎 {{ nickname || username }}</span>
+        </div>
+        <!-- 侧边栏导航 -->
+        <el-menu
+          default-active="/home"
+          class="el-menu-vertical-demo"
+          background-color="#23262E"
+          text-color="#fff"
+          active-text-color="#409EFF"
+          unique-opened
+          router
+        >
+          <template v-for="item in menu">
+            <el-menu-item
+              v-if="!item.children"
+              :index="item.indexPath"
+              :key="item.indexPath"
+            >
+              <i :class="item.icon"></i>
+              <span>{{ item.title }}</span>
+            </el-menu-item>
+            <el-submenu v-else :index="item.indexPath" :key="item.indexPath">
+              <template slot="title">
+                <i :class="item.icon"></i>
+                <span>{{ item.title }}</span>
+              </template>
+              <el-menu-item
+                v-for="(obj, i) in item.children"
+                :index="obj.indexPath"
+                :key="i"
+              >
+                <i :class="obj.icon"></i>
+                <span>{{ obj.title }}</span>
+              </el-menu-item>
+            </el-submenu>
+          </template>
+        </el-menu>
+      </el-aside>
       <el-container>
         <!-- 页面主体区域 -->
         <el-main> Main.vue后台主页 </el-main>
@@ -53,8 +95,18 @@
 // 万一组件内不支持这个原生事件名字
 // 解决：@事件名.native="methods里方法名"
 // .native 给组件内根标签，绑定这个原生的事件
+import { mapGetters } from 'vuex'
+import { getMenusListAPI } from '@/api'
 export default {
   name: 'my-layout',
+  computed: {
+    ...mapGetters(['username', 'nickname', 'user_pic']),
+  },
+  data() {
+    return {
+      menu: {}, // 存侧边栏数据
+    }
+  },
   methods: {
     logoutFn() {
       // 询问用户是否退出登录
@@ -66,10 +118,27 @@ export default {
         .then(() => {
           // TODO：执行退出登录的操作
           this.$store.commit('updateToken', '')
+          this.$store.commit('updateUserInfo', {})
           this.$router.push('/login')
         })
         .catch((err) => err)
     },
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath)
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath)
+    },
+    // 请求-侧边栏数据
+    async getMenusListFn() {
+      const res = await getMenusListAPI()
+      // console.log(res)
+      this.menu = res.data.data
+    },
+  },
+  created() {
+    // 请求-侧边栏数据
+    this.getMenusListFn()
   },
 }
 </script>
@@ -107,5 +176,27 @@ export default {
   background-color: #fff;
   margin-right: 10px;
   object-fit: cover;
+}
+// 左侧边栏用户信息区域
+.user-box {
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  user-select: none;
+  img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #fff;
+    margin-right: 15px;
+    object-fit: cover;
+  }
+  span {
+    color: white;
+    font-size: 12px;
+  }
 }
 </style>
