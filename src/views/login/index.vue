@@ -82,7 +82,7 @@ export default {
             this.$message.success(res.message)
             this.updateToken(res.token)
             // console.log(res.token)
-            this.$router.push('/layout')
+            this.$router.push('/')
           } else {
             // 失败
             this.$message.error(res.message)

@@ -15,5 +15,6 @@ module.exports = {
     'space-before-function-paren': 0,
     // 出现多行空格
     'no-multiple-empty-lines': 0,
+    camelcase: 'Off',
   },
 }
