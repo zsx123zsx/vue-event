@@ -26,6 +26,18 @@ const routes = [
         path: 'user-avatar',
         component: () => import('@/views/user/userAvatar.vue'),
       },
+      {
+        path: 'user-pwd', // 必须用这个值
+        component: () => import('@/views/user/userPwd'),
+      },
+      {
+        path: 'art-cate',
+        component: () => import('@/views/acticle/artCate.vue'),
+      },
+      {
+        path: 'art-list',
+        component: () => import('@/views/acticle/artList.vue'),
+      },
     ],
   },
   {
